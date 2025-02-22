@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CooperWaNg-py's Portfolio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        .bio {
+            margin: 20px 0;
+        }
+        .repos {
+            text-align: left;
+        }
+        .repo {
+            background: white;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CooperWaNg-py</h1>
+        <div class="bio">
+            <p>Hello! I'm CooperWaNg-py. Check out my projects below or visit my <a href="https://github.com/CooperWaNg-py" target="_blank">GitHub profile</a>.</p>
+        </div>
+        <h2>My Projects</h2>
+        <div class="repos" id="repo-list">
+            <!-- Repositories will be populated here -->
+        </div>
+    </div>
+
+    <script>
+        // Fetch GitHub repositories
+        fetch('https://api.github.com/users/CooperWaNg-py/repos')
+            .then(response => response.json())
+            .then(data => {
+                const repoList = document.getElementById('repo-list');
+                data.forEach(repo => {
+                    const repoDiv = document.createElement('div');
+                    repoDiv.className = 'repo';
+                    repoDiv.innerHTML = `
+                        <h3><a href="${repo.html_url}" target="_blank">${repo.name}</a></h3>
+                        <p>${repo.description || 'No description available'}</p>
+                        <p>⭐ ${repo.stargazers_count} | 🍴 ${repo.forks_count}</p>
+                    `;
+                    repoList.appendChild(repoDiv);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching repos:', error);
+                document.getElementById('repo-list').innerHTML = '<p>Could not load repositories.</p>';
+            });
+    </script>
+</body>
+</html>
